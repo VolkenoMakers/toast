@@ -17,7 +17,7 @@ import React from "react";
 import { View } from "react-native";
 import { Button } from "react-native-elements";
 
-import { useToast, ToastProvider } from "../toast";
+import { useToast, ToastProvider } from "@volkenomakers/toast";
 
 const ToastMessages = () => {
   const toast = useToast();

@@ -1,6 +1,6 @@
 {
   "name": "@volkenomakers/toast",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React native package for showing success and error message using react hooks",
   "main": "index.js",
   "scripts": {

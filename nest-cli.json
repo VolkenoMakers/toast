@@ -1,0 +1,8 @@
+{
+  "@volkenomakers/toast": {
+    "type": "library",
+    "root": "./",
+    "entryFile": "index",
+    "sourceRoot": "./src"
+  }
+}

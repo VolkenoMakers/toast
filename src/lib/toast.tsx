@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { ReactElement } from "react";
 import {
   View,
   Animated,
@@ -9,14 +10,26 @@ import {
   Image,
 } from "react-native";
 
+enum TOAST_TYPES {
+  success,
+  error,
+}
+
+type MessageType = {
+  id: string;
+  type: TOAST_TYPES.success | TOAST_TYPES.error;
+  text: string;
+  duration: number;
+};
+
 const DIMENSIONS = Dimensions.get("screen");
 const ToastMessagesContext = React.createContext({
   messages: [],
-  setMessages: () => {},
-});
+  setMessages: (message: MessageType) => {},
+} as { messages: MessageType[]; setMessages: any });
 
-export const ToastProvider = ({ children }) => {
-  const [messages, setMessages] = React.useState([]);
+export const ToastProvider = ({ children }: { children: ReactElement }) => {
+  const [messages, setMessages] = React.useState<MessageType[]>([]);
   return (
     <ToastMessagesContext.Provider value={{ messages, setMessages }}>
       <View style={{ flex: 1 }}>
@@ -42,20 +55,16 @@ function Toast() {
       }}
     >
       {messages.map((message) => (
-        <Message message={message} key={message.id} />
+        <Message message={message} key={message?.id} />
       ))}
     </View>
   );
 }
 
-const TOAST_TYPES = {
-  success: 0,
-  error: 1,
-};
 const SUCCESS_COLOR = "#16a085";
 const ERROR_COLOR = "#c0392b";
 const INDICATOR_WIDTH = DIMENSIONS.width - 30;
-function Message({ message }) {
+function Message({ message }: { message: MessageType }) {
   let {
     type = TOAST_TYPES.success,
     text,
@@ -74,8 +83,8 @@ function Message({ message }) {
       useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished) {
-        setMessages((old) => {
-          return old.filter((f) => f.id !== message.id);
+        setMessages((old: MessageType[]) => {
+          return old.filter((f: MessageType) => f.id !== message.id);
         });
       }
     });
@@ -128,7 +137,6 @@ function Message({ message }) {
             paddingHorizontal: 10,
             paddingVertical: 15,
             flexDirection: "row",
-            // alignItems: "center",
             justifyContent: "space-between",
           }}
         >
@@ -136,18 +144,13 @@ function Message({ message }) {
           <View style={{ marginLeft: 15 }}>
             <TouchableOpacity
               onPress={() => {
-                setMessages((old) => {
-                  return old.filter((f) => f.id !== message.id);
+                setMessages((old: MessageType[]) => {
+                  return old.filter((f: MessageType) => f.id !== message.id);
                 });
               }}
             >
               <Image
                 source={require("./clear.png")}
-                onPress={() => {
-                  setMessages((old) => {
-                    return old.filter((f) => f.id !== message.id);
-                  });
-                }}
                 style={{ width: 24, height: 24, tintColor: "#FFF" }}
               />
             </TouchableOpacity>
@@ -159,23 +162,23 @@ function Message({ message }) {
 }
 export function useToast() {
   const { setMessages } = useContext(ToastMessagesContext);
-  const success = React.useCallback((message, duration = 4000) => {
+  const success = React.useCallback((message: string, duration = 4000) => {
     const data = {
       type: TOAST_TYPES.success,
       text: message,
       duration: duration,
       id: new Date().getTime(),
     };
-    setMessages((old) => [data, ...old]);
+    setMessages((old: MessageType[]) => [data, ...old]);
   }, []);
-  const error = React.useCallback((message, duration = 4000) => {
+  const error = React.useCallback((message: string, duration = 4000) => {
     const data = {
       type: TOAST_TYPES.error,
       text: message,
       duration: duration,
       id: new Date().getTime(),
     };
-    setMessages((old) => [data, ...old]);
+    setMessages((old: MessageType[]) => [data, ...old]);
   }, []);
   return {
     success,

@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
-import { ReactElement } from "react";
+import React, { ReactElement, useContext } from "react";
 import {
-  View,
   Animated,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
   Dimensions,
-  Text,
   Image,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 
 enum TOAST_TYPES {
@@ -64,6 +63,7 @@ function Toast() {
 const SUCCESS_COLOR = "#16a085";
 const ERROR_COLOR = "#c0392b";
 const INDICATOR_WIDTH = DIMENSIONS.width - 30;
+
 function Message({ message }: { message: MessageType }) {
   let {
     type = TOAST_TYPES.success,
@@ -115,33 +115,56 @@ function Message({ message }: { message: MessageType }) {
       onPressOut={() => {
         animateIndicator();
       }}
+      style={{ borderRadius: 5, overflow: "hidden" }}
     >
       <Animated.View
         style={{
           opacity,
           transform: [{ scale }, { translateY }],
-          backgroundColor: is_success ? SUCCESS_COLOR : ERROR_COLOR,
+          backgroundColor: "#FFF",
           marginBottom: 4,
           marginHorizontal: 15,
         }}
       >
         <Animated.View
           style={{
-            backgroundColor: "rgba(0,0,0,.6)",
+            backgroundColor: is_success ? SUCCESS_COLOR : ERROR_COLOR,
             width: width,
             height: 4,
           }}
         />
         <View
           style={{
-            paddingHorizontal: 10,
-            paddingVertical: 15,
             flexDirection: "row",
-            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          <Text style={{ color: "#FFF", fontSize: 18, flex: 1 }}>{text}</Text>
-          <View style={{ marginLeft: 15 }}>
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "stretch",
+              }}
+            >
+              <View
+                style={{
+                  width: 3,
+                  backgroundColor: is_success ? SUCCESS_COLOR : ERROR_COLOR,
+                }}
+              />
+              <Text
+                style={{
+                  color: "#000",
+                  fontSize: 12,
+                  paddingHorizontal: 5,
+                  paddingVertical: 10,
+                }}
+              >
+                {text}
+              </Text>
+            </View>
+          </View>
+          <View style={{ marginHorizontal: 5 }}>
             <TouchableOpacity
               onPress={() => {
                 setMessages((old: MessageType[]) => {

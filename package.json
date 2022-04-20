@@ -1,16 +1,24 @@
 {
   "name": "@volkenomakers/toast",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "React native package for showing success and error message using react hooks",
   "scripts": {
-    "build": "nest build @volkenomakers/toast",
-    "prepare": "yarn run build"
+    "build": "tsc && npm run copy-assets",
+    "prepare": "yarn run build",
+    "copy-assets": "cpx 'src/lib/*.png' dist/lib"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist/**/*"
   ],
+  "devDependencies": {
+    "@types/react-native": "^0.66.10",
+    "@typescript-eslint/eslint-plugin": "5.20.0",
+    "@typescript-eslint/parser": "5.20.0",
+    "cpx": "^1.5.0",
+    "typescript": "^4.5.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/VolkenoMakers/toast.git"
@@ -24,14 +32,6 @@
     "onboarding"
   ],
   "author": "volkenomakers",
-  "peerDependencies": {
-    "react": "^16.0.0-beta.5",
-    "react-native": "^0.49.1"
-  },
-  "devDependencies": {
-    "@types/react-native": "^0.66.10",
-    "typescript": "^4.5.4"
-  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/VolkenoMakers/toast/issues"
